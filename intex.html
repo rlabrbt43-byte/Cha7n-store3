@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شحن ستور - شحن الألعاب الرقمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a2e;
+            --accent-blue: #0f3460;
+            --accent-purple: #533483;
+            --text-primary: #ffffff;
+            --text-secondary: #b8b8b8;
+            --glow: 0 0 20px rgba(15, 52, 96, 0.5);
+            --shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #fff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .nav-links a:hover {
+            text-shadow: var(--glow);
+        }
+        .dark-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        main {
+            margin-top: 80px;
+        }
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"><rect fill="%230f3460" width="1200" height="600"/><text x="50%" y="50%" font-size="100" fill="%23ffffff" text-anchor="middle" dy=".3em">بانر الألعاب 🔥</text></svg>');
+            background-size: cover;
+            height: 50vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .game-card {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: var(--shadow);
+        }
+        .game-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--glow), var(--shadow);
+        }
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .offers, .popular, .reviews {
+            margin: 4rem 0;
+        }
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn {
+            background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(15,52,96,0.4);
+        }
+        .btn:hover {
+            box-shadow: var(--glow);
+            transform: translateY(-2px);
+        }
+        .game-page {
+            display: none;
+        }
+        .game-page.active {
+            display: block;
+        }
+        .prices {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .price-option {
+            background: var(--bg-secondary);
+            padding: 1.5rem;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .price-option:hover {
+            background: var(--accent-blue);
+        }
+        .input-group {
+            margin: 1rem 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .payment-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .payment-item:hover {
+            background: var(--accent-purple);
+        }
+        footer {
+            background: var(--bg-secondary);
+            padding: 3rem 0 1rem;
+            text-align: center;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        .social-links a {
+            font-size: 2rem;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+        .social-links a:hover {
+            color: var(--accent-blue);
+            transform: scale(1.2);
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">شحن ستور</div>
+            <ul class="nav-links">
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#offers">العروض</a></li>
+                <li><a href="#popular">الأكثر طلباً</a></li>
+                <li><a href="#contact">تواصل معنا</a></li>
+            </ul>
+            <button class="dark-toggle" id="darkToggle"><i class="fas fa-moon"></i></button>
+        </nav>
+    </header>
+
+    <main id="home">
+        <section class="hero">
+            <div>
+                <h1>شحن الألعاب بسرعة وأمان</h1>
+                <p>أفضل الأسعار لشحن Free Fire, PUBG, وغيرها</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2 class="section-title">الألعاب المتاحة</h2>
+            <div class="games-grid" id="gamesGrid">
+                <!-- الألعاب ستُضاف ديناميكياً -->
+            </div>
+        </section>
+
+        <section id="offers" class="section offers">
+            <h2 class="section-title">العروض والتخفيضات</h2>
+            <div class="games-grid">
+                <div class="game-card">
+                    <i class="fas fa-fire game-icon"></i>
+                    <h3>Free Fire - خصم 20%</h3>
+                    <p>110 جوهرة بـ 200 دج فقط</p>
+                    <button class="btn">اطلب الآن</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="popular" class="section popular">
+            <h2 class="section-title">الأكثر طلباً</h2>
+            <p>Free Fire يتصدر القائمة هذا الأسبوع.</p>
+        </section>
+
+        <section class="section reviews">
+            <h2 class="section-title">آراء الزبائن</h2>
+            <div style="display: grid; gap: 1rem;">
+                <blockquote>"سريع جداً، شحنت PUBG في دقائق!" - أحمد</blockquote>
+                <blockquote>"أفضل متجر شحن في الجزائر." - فاطمة</blockquote>
+            </div>
+        </section>
+    </main>
+
+    <!-- صفحات الألعاب -->
+    <div id="freefire" class="game-page section">
+        <h2 class="section-title">شحن Free Fire</h2>
+        <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'><rect fill='%230f3460' width='400' height='200'/><text x='50%' y='50%' font-size='30' fill='white' text-anchor='middle' dy='.3em'>صورة Free Fire</text></svg>" alt="Free Fire" style="width:100%; max-width:400px; border-radius:20px; margin-bottom:2rem;">
+        <div class="prices">
+            <div class="price-option" data-price="250" data-gems="110">
+                <span>110 جوهرة</span>
+                <span>250 دج</span>
+            </div>
+            <div class="price-option" data-price="500" data-gems="231">
+                <span>231 جوهرة</span>
+                <span>500 دج</span>
+            </div>
+            <!-- المزيد من الأسعار -->
+        </div>
+        <div class="input-group">
+            <label>رقم ID اللاعب</label>
+            <input type="text" id="playerId" placeholder="أدخل IDك هنا">
+        </div>
+        <button class="btn" style="width:100%; margin:2rem 0;">شراء الآن</button>
+        <p><strong>وقت التسليم:</strong> 5-10 دقائق</p>
+        <p><strong>معلومات الشحن:</strong> آمن 100%، لا حظر.</p>
+        <div class="payment-methods">
+            <div class="payment-item"><i class="fas fa-mobile-alt"></i><br>فليكسي</div>
+            <div class="payment-item"><i class="fas fa-gift-card"></i><br>بون أوريدو</div>
+            <div class="payment-item"><i class="fas fa-gift-card"></i><br>بون جازي</div>
+            <div class="payment-item"><i class="fas fa-credit-card"></i><br>بطاقة هدية</div>
+        </div>
+        <button class="btn" onclick="history.back()">العودة</button>
+    </div>
+
+    <!-- نسخ مشابهة للألعاب الأخرى، للاختصار هنا واحدة فقط. كرر لـ PUBG, eFootball, إلخ. -->
+
+    <footer>
+        <div class="section">
+            <h3>تواصل معنا</h3>
+            <div class="social-links">
+                <a href="https://wa.me/123456789" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://t.me/shahnstore" target="_blank"><i class="fab fa-telegram"></i></a>
+            </div>
+            <p>&copy; 2026 شحن ستور. جميع الحقوق محفوظة.</p>
+            <p><a href="#privacy">سياسة الخصوصية</a> | <a href="#terms">الشروط</a> | <a href="#about">حول المتجر</a></p>
+        </div>
+    </footer>
+
+    <script>
+        const games = [
+            { id: 'freefire', name: 'Free Fire', icon: 'fas fa-fire', color: '#ff4444' },
+            { id: 'pubg', name: 'PUBG Mobile', icon: 'fas fa-crosshairs', color: '#00ff00' },
+            { id: 'efootball', name: 'eFootball', icon: 'fas fa-futbol', color: '#0000ff' },
+            { id: 'eafc', name: 'EA Sports FC', icon: 'fas fa-trophy', color: '#ff0000' },
+            { id: 'minecraft', name: 'Minecraft', icon: 'fab fa-unity', color: '#4caf50' }
+        ];
+
+        const gamesGrid = document.getElementById('gamesGrid');
+        games.forEach(game => {
+            const card = document.createElement('div');
+            card.className = 'game-card';
+            card.innerHTML = `
+                <i class="${game.icon} game-icon"></i>
+                <h3>${game.name}</h3>
+                <p>شحن سريع وآمن</p>
+                <button class="btn" onclick="showGame('${game.id}')">شحن الآن</button>
+            `;
+            gamesGrid.appendChild(card);
+        });
+
+        function showGame(gameId) {
+            document.getElementById('home').style.display = 'none';
+            document.getElementById(gameId).classList.add('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Dark mode toggle (already dark, can extend for light)
+        document.getElementById('darkToggle').addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const icon = document.querySelector('#darkToggle i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        // Price selection
+        document.querySelectorAll('.price-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.price-option').forEach(o => o.style.background = 'var(--bg-secondary)');
+                opt.style.background = 'var(--accent-blue)';
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Responsive menu for mobile (add if needed)
+    </script>
+</body>
+  </html>
